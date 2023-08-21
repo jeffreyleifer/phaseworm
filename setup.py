@@ -5,6 +5,16 @@ from setuptools import setup
 import inspect
 import os
 import sys
+import pkg_resources
+
+# Check if TensorFlow is installed and if the version is >= 2.0
+try:
+    tensorflow_version = pkg_resources.get_distribution("tensorflow").version
+    if pkg_resources.parse_version(tensorflow_version) < pkg_resources.parse_version("2.0"):
+        raise Exception("TensorFlow version must be >= 2.0")
+except pkg_resources.DistributionNotFound:
+    raise Exception("TensorFlow is not installed")
+
 
 # Import the version string.
 path = os.path.join(os.path.abspath(os.path.dirname(inspect.getfile(
@@ -45,5 +55,4 @@ setup(
             'Topic :: Scientific/Engineering',
             'Topic :: Scientific/Engineering :: Physics'],
     python_requires='>=3.6,<3.9',
-    install_requires=['obspy>=1.2', 'tensorflow>=2.0']
     )
